@@ -1,0 +1,198 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: 'Innovecs test app service API'
+basePath: ''
+consumes:
+- application/json
+- application/vnd.api+json
+produces:
+- application/json
+- application/vnd.api+json
+parameters:
+  Authorization:
+    name: Authorization
+    in: header
+    type: string
+    required: true
+    description: Authorization token
+  jwt:
+    name: jwt
+    in: query
+    type: string
+    required: false
+    description: Authorization jwt token
+
+paths:
+
+   ################################################################################
+   #                               Page Views                                    #
+  ################################################################################
+
+  /page-views:
+    get:
+      description: Get list of users
+      parameters:
+      - $ref: '#/parameters/Authorization'
+      - name: country
+        in: query
+        type: array
+        items:
+          type: string
+      - name: browserName
+        in: query
+        type: array
+        items:
+          type: string
+      - name: userId
+        in: query
+        type: array
+        items:
+          type: integer
+      - name: pageId
+        in: query
+        type: array
+        items:
+          type: integer
+      responses:
+        200:
+          description: List of users
+          schema:
+            type: object
+            properties:
+              data:
+                properties:
+                  dealId:
+                    type: integer
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/responses/Error'
+        404:
+          description: User not found
+          schema:
+          $ref: '#/responses/Error'
+        401:
+          description: Unauthorized Access
+          schema:
+            $ref: '#/responses/Error'
+    put:
+      description: Create new record of page-views
+      parameters:
+        - $ref: '#/parameters/Authorization'
+        - name: payload
+          in: body
+          schema:
+            $ref: '#/definitions/PageView'
+      responses:
+        200:
+          description: Returns data of created page-view record
+          schema:
+            $ref: '#/definitions/PageView'
+        400:
+          description: Validation error
+          schema:
+            $ref: '#/responses/Error'
+        404:
+          description: User not found
+          schema:
+          $ref: '#/responses/Error'
+        401:
+          description: Unauthorized Access
+          schema:
+            $ref: '#/responses/Error'
+
+  /returned-users:
+    get:
+      description: Get list of pages by browser name
+      parameters:
+        - $ref: '#/parameters/Authorization'
+        - name: userId
+          in: path
+          type: string
+      responses:
+        200:
+          description: Get page views by broser name
+          schema:
+            $ref: '#/definitions/PageView'
+        400:
+          $ref: '#/responses/ValidationError'
+        401:
+          $ref: '#/responses/Unauthorized'
+        404:
+          $ref: '#/responses/NotFound'
+
+  /version:
+    get:
+      description: Service healthcheck, returns version of service
+      responses:
+        200:
+          description: Returns version of service
+          schema:
+            type: object
+            properties:
+              status:
+                type: number
+              version:
+                type: string
+
+  ################################################################################
+  #                                 Swagger UI                                   #
+  ################################################################################
+  /api-docs:
+    get:
+      description: Swagger UI
+      responses:
+        "200":
+          description: Statuses of dependent resources
+
+  /api-docs/{link}:
+    get:
+      description: Self description of Swagger UI. Add here to avoiding api-docs url parsing during swagger validation.
+      parameters:
+      - name: link
+        in: path
+        required: false
+        type: string
+      responses:
+        "200":
+          description: Statuses of dependent resources
+
+################################################################################
+#                                 Definitions                                  #
+################################################################################
+responses:
+  ValidationError:
+    description: Validation error
+    schema:
+      $ref: '#/responses/Error'
+  NotFound:
+    description: User not found
+    schema:
+      $ref: '#/responses/Error'
+  Unauthorized:
+    description: Unauthorized Access
+    schema:
+      $ref: '#/responses/Error'
+  Error:
+    type: object
+    properties:
+      error:
+        properties:
+          status:
+            type: integer
+          message:
+            type: string
+
+definitions:
+  PageView:
+    type: object
+    properties:
+      pageId:
+        type: integer
+      userId:
+        type: integer
+      browser:
+        type: string
+      eventTimestamp:
+        type: integer

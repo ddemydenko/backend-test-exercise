@@ -1,0 +1,9 @@
+{
+  "pagination": {
+    "defaultPage": 1,
+    "defaultLimit": 10
+  },
+  "auth": {
+    "token": "6i2nSgWu0DfYIE8I0ZBJOtxTmHJATRzu"
+  }
+}

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:12-alpine'
+    environment:
+      POSTGRES_PASSWORD: 555666
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+    - '5000:5432'
+  app:
+    build: .
+    depends_on:
+    - postgres
+    ports:
+    - '3000:3000'
+    links:
+    - "postgres"
+    environment:
+    - DATABASE_URL=postgres://postgres:555666@postgres:5432/postgres
+    - NODE_ENV=development_docker
+    command: bash -c "sleep 5 && npm run migration && sleep 2 && npm start"
