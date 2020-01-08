@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: 'Innovecs test app service API'
+  title: 'Intellias test app service API'
 basePath: ''
 consumes:
 - application/json
