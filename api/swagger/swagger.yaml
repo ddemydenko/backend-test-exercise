@@ -56,14 +56,9 @@ paths:
           type: integer
       responses:
         200:
-          description: List of users
+          description: List of page-views
           schema:
-            type: object
-            properties:
-              data:
-                properties:
-                  dealId:
-                    type: integer
+            $ref: '#/definitions/PageView'
         400:
           description: Validation error
           schema:
@@ -104,15 +99,15 @@ paths:
 
   /returned-users:
     get:
-      description: Get list of pages by browser name
+      description: Get list of users who returned
       parameters:
         - $ref: '#/parameters/Authorization'
         - name: userId
-          in: path
+          in: query
           type: string
       responses:
         200:
-          description: Get page views by broser name
+          description: Returns list of users who visited more than once 
           schema:
             $ref: '#/definitions/PageView'
         400:
